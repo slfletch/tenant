@@ -1,0 +1,19 @@
+#!/bin/bash
+
+[ "${TENANT_ERROR_LOG}" ] && LOG_FILE="${TENANT_ERROR_LOG}" || LOG_FILE="/home/tenant/output/errors.log"
+
+# Print out a usage for the invoked method, and return a failure code
+usage() {
+    echo "Usage:"
+    echo "$1"
+    return 1
+}
+
+# Log to console and tee to the errors log
+USAGE_ERRORLOG="errorlog [message]"
+if [ "$1" ]; then
+    echo "$(date) - $1" | tee -a "${LOG_FILE}"
+else
+    usage "${USAGE_ERRORLOG}"
+fi
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+[ "${TENANT_MESSAGE_LOG}" ] && MSGLOG_FILE="${TENANT_MESSAGE_LOG}" || LOG_FILE="/home/tenant/output/messages.log"
+
+# Print out a usage for the invoked method, and return a failure code
+usage() {
+    echo "Usage:"
+    echo "$1"
+    return 1
+}
+
+# Log to console and tee to the messages.log log
+USAGE_MSGLOG="msglog [message]"
+if [ "$1" ]; then
+    echo "$1" | tee -a "${MSGLOG_FILE}"
+else
+    usage "${USAGE_MSGLOG}"
+fi

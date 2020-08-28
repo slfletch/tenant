@@ -1,0 +1,35 @@
+apiVersion: v1
+entries:
+  helm-toolkit:
+  - apiVersion: v1
+    created: "2020-08-24T17:43:25.42586137Z"
+    description: OpenStack-Helm Helm-Toolkit
+    digest: 7eec69aac9f176041cb29f56c5d5227b24081028866a372e3d05cfb555e30a3a
+    home: https://docs.openstack.org/openstack-helm
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/OpenStack-Helm/OpenStack_Project_OpenStackHelm_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: helm-toolkit
+    sources:
+    - https://opendev.org/openstack/openstack-helm-infra
+    - https://opendev.org/openstack/openstack-helm
+    tillerVersion: '>=2.13.0'
+    urls:
+    - http://localhost:8879/charts/helm-toolkit-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v1
+    created: "2020-08-24T17:43:25.432899994Z"
+    description: OpenStack-Helm Helm-Toolkit
+    digest: 3945319983d691e5273b98ddfc1cf5c443b64d1feb32d41cbee6b69f3c909d16
+    home: https://docs.openstack.org/openstack-helm
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/OpenStack-Helm/OpenStack_Project_OpenStackHelm_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: helm-toolkit
+    sources:
+    - https://opendev.org/openstack/openstack-helm-infra
+    - https://opendev.org/openstack/openstack-helm
+    urls:
+    - http://localhost:8879/charts/nfs-provisioner/helm-toolkit-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-08-24T17:43:25.421229921Z"

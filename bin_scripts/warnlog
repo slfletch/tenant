@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Use the environment variable or a default.
+[ "${TENANT_WARNING_LOG}" ] && WARNLOG_FILE="${TENANT_WARNING_LOG}" || LOG_FILE="/home/tenant/output/warnings.log"
+
+# Print out a usage for the invoked method, and return a failure code
+usage() {
+    echo "Usage:"
+    echo "$1"
+    return 1
+}
+
+# Log to console and tee to the warnings.log log
+USAGE_WARNLOG="warnlog [message]"
+if [ "$1" ]; then
+    echo "$1" | tee -a "${WARNLOG_FILE}"
+else
+    usage "${USAGE_WARNLOG}"
+fi
