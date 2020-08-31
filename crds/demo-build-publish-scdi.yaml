@@ -22,6 +22,31 @@ spec:
   - name: url
     value: https://github.com/slfletch/tenant
 ---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  generateName: git-resource-branch-
+  namespace: demo
+spec:
+  taskSpec:
+    inputs:
+      resources:
+      - name: tenant
+        type: git
+    steps:
+    - image: ubuntu
+      script: cat tenant/Dockerfile
+  inputs:
+    resources:
+    - name: tenant
+      resourceSpec:
+        type: git
+        params:
+          - name: revision
+            value: master
+          - name: url
+            value: https://github.com/slfletch/tenant
+---
 # Builds an image via kaniko and pushes it to registry.
 apiVersion: tekton.dev/v1alpha1
 kind: Task
@@ -36,15 +61,18 @@ spec:
     params:
     - name: pathToDockerFile
       description: The path to the dockerfile to build
-      default: /workspace/workspace/tcicd/Dockerfile
+      default: /workspace/workspace/Dockerfile
     - name: pathToContext
       description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: /workspace/workspace/tcicd
+      default: /workspace/workspace/tenant
   outputs:
     resources:
     - name: builtImage
       type: image
   steps:
+  - name: cat
+    image: ubuntu
+    script: ls -ltr /workspace/workspace && cat /workspace/workspace/Dockerfile
   - name: build-and-push
     image: gcr.io/kaniko-project/executor:v0.17.1
     # specifying DOCKER_CONFIG is required to allow kaniko to detect docker credential
