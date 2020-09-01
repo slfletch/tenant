@@ -1,5 +1,5 @@
 # Copyright 2019 AT&T Intellectual Property.  All other rights reserved.
-ARG FROM=lachlanevenson/k8s-kubectl:latest
+ARG FROM=ubuntu:20.04
 FROM ${FROM} as build
 
 ARG CTX_BASE="."
@@ -35,25 +35,26 @@ ENV TENANT_MESSAGE_LOG="${TENANT_OUTPUT}/messages.log"
 ENV TENANT_WARNING_LOG="${TENANT_OUTPUT}/warnings.log"
 ENV TENANT_ERROR_LOG="${TENANT_OUTPUT}/errors.log"
 ENV SUITE_FAILURE_MESSAGE_FILE="${TENANT_OUTPUT}/suite-failure-message.txt"
-ENV REGISTRY="stacey-1.localdomain:30003"
+ENV REGISTRY="stacey-0.localdomain:30003"
 ENV TENANT_STOPPER_PORT="60106"
 
+RUN set -ex ;\
+    apt-get update -y ;\
+    apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        curl \
+        gnupg \
+        apt-transport-https \
+        git ;
+
+RUN curl -LO https://git.io/get_helm.sh \
+    && chmod 700 get_helm.sh \
+    && ./get_helm.sh
 #RUN useradd -m -u 10000 -U -s /bin/bash "${TENANT_USER}" \
 RUN mkdir -p "${TENANT_HOME}" \
     && mkdir -p "${TENANT_INPUT}" \
     && mkdir -p "${TENANT_OUTPUT}" \
     && mkdir -p "${TENANT_OUTPUT_DIAGNOSTICS}"
 
-COPY "${CTX_BASE}"/"standardized_scripts/" "${TENANT_HOME}/"
-
-#RUN chown -R "${TENANT_USER}": "${TENANT_HOME}" \
-RUN     chmod +x "${TENANT_HOME}/invoke.sh" \
-    && chmod +x "${TENANT_HOME}/run.sh" \
-    && chmod +x "${TENANT_HOME}/setup.sh" \
-    && chmod +x "${TENANT_HOME}/teardown.sh" \
-    && chmod +x "${TENANT_HOME}/stop.sh" \
-    && chmod +x "${TENANT_HOME}/stop_listener.sh" \
-    && chmod +x "${TENANT_HOME}/finally.sh" \
-  #  && chown "${TENANT_USER}": "${TENANT_INPUT}" \
-  #  && chown "${TENANT_USER}": "${TENANT_OUTPUT}" \
-  #  && chown "${TENANT_USER}": "${TENANT_OUTPUT_DIAGNOSTICS}"
+COPY "${CTX_BASE}/standardized_scripts/*.sh" "${TENANT_HOME}/"

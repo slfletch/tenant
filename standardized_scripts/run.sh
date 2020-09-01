@@ -1,21 +1,21 @@
 #!/bin/bash
-# shellcheck source=/dev/null
-shopt -s globstar
 
-. "${TENANT_HOME}/utils.sh"
-
-finish_run() {
-    if ! ls "${TENANT_OUTPUT}"/**/tenant-output*.yaml; then
-        infralog "==== RUN step did not produce required ${TENANT_OUTPUT}/**/tenant-output.yaml"
-        exit 1
-    fi
-}
-
-trap finish_run EXIT
-
-# Only run if the stop flag is not set
-if [ -f "${TENANT_HOME}/stop.flag" ]; then
-    infralog "==== RUN step is not starting because stop has been requested"
-else
-    run_tenant_target "run" "${TENANT_RUN}"
-fi
+kubectl get -n harbor secrets harbor-harbor-harbor-nginx -o 'go-template={{ index .data "ca.crt" | base64decode }}' > ./temp-ca.crt
+tee /tmp/values.yaml <<EOF
+labels:
+  server:
+    node_selector_key: harbor
+    node_selector_value: enabled
+  prometheus_rabbitmq_exporter:
+    node_selector_key: harbor
+    node_selector_value: enabled
+  test:
+    node_selector_key: harbor
+    node_selector_value: enabled
+  jobs:
+    node_selector_key: harbor
+    node_selector_value: enabled
+volume:
+  class_name: nfs-provisioner
+EOF
+helm upgrade --wait --install --force kindly-maltese --ca-file ./temp-ca.crt --version 0.1.0 tcicd/rabbitmq --values /tmp/values.yaml
