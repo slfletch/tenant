@@ -3,7 +3,7 @@ ARG FROM=lachlanevenson/k8s-kubectl:latest
 FROM ${FROM} as build
 
 ARG CTX_BASE="."
-COPY "${CTX_BASE}"/"bin_scripts/*" "/usr/local/bin/"
+COPY "${CTX_BASE}"/"bin_scripts/" "/usr/local/bin/"
 RUN chmod +x "/usr/local/bin/errorlog" \
     && chmod +x "/usr/local/bin/infralog" \
     && chmod +x "/usr/local/bin/msglog" \
