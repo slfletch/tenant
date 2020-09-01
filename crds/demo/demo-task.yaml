@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: demo-task
+  namespace: "demo" 
+spec:
+  steps:
+    - name: kubectlinstall
+      image: lachlanevenson/k8s-kubectl:latest
+      command: ["kubectl"]
+      args:
+        - "get"
+        - "pods"

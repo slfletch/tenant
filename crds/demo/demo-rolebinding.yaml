@@ -1,0 +1,27 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: demo-reader-binding
+  namespace: demo
+subjects:
+# Kubernetes service account
+- kind: ServiceAccount
+  name: demo-svc
+roleRef:
+  kind: Role
+  name: demo-pod-reader
+  apiGroup: ""
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: demo-reader-binding
+  namespace: harbor
+subjects:
+# Kubernetes service account
+- kind: ServiceAccount
+  name: demo-svc
+roleRef:
+  kind: Role
+  name: demo-pod-reader
+  apiGroup: ""

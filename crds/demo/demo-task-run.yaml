@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: demotask-run
+  namespace: "demo"
+spec:
+  serviceAccountName: demo-svc 
+  taskRef:
+    name: demo-task
+  podTemplate:

@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: demotask-teardown-scdi
+  namespace: "demo"
+spec:
+  serviceAccountName: demo-svc
+  taskSpec:
+    steps:
+    - name: demo-scdi 
+      image: stacey-0.localdomain:30003/tcicd/demo:1.1
+      script: |
+        /home/stacey/teardown.sh
