@@ -7,7 +7,7 @@ spec:
   type: image
   params:
   - name: url
-    value: stacey-0.localdomain:30003/tcicd/demo:1.2
+    value: testing2016/demo:latest
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
@@ -47,64 +47,39 @@ spec:
           - name: url
             value: https://github.com/slfletch/tenant
 ---
-# Builds an image via kaniko and pushes it to registry.
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-push-kaniko
   namespace: demo
+  name: build-and-push-task
 spec:
-  inputs:
-    resources:
-    - name: workspace
-      type: git
-    params:
-    - name: pathToDockerFile
-      description: The path to the dockerfile to build
-      default: /workspace/workspace/Dockerfile
-    - name: pathToContext
-      description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: /workspace/workspace/tenant
-  outputs:
-    resources:
-    - name: builtImage
-      type: image
+  resources:
+    inputs:
+      - name: workspace
+        type: git
   steps:
-  - name: cat
-    image: ubuntu
-    script: ls -ltr /workspace/workspace && cat /workspace/workspace/Dockerfile
-  - name: build-and-push
-    image: gcr.io/kaniko-project/executor:v0.17.1
-    # specifying DOCKER_CONFIG is required to allow kaniko to detect docker credential
-    env:
-    - name: "DOCKER_CONFIG"
-      value: "/tekton/home/.docker/"
-    args:
-    - --dockerfile=$(inputs.params.pathToDockerFile)
-    - --destination=$(outputs.resources.builtImage.url)
-    - --context=$(inputs.params.pathToContext)
-    - --oci-layout-path=$(inputs.resources.builtImage.path)
-    securityContext:
-      runAsUser: 0
-  sidecars:
-    - image: registry
-      name: registry
+    - name: build-and-push-step
+      image: gcr.io/kaniko-project/executor:v0.19.0
+      env:
+        - name: DOCKER_CONFIG
+          value: /tekton/home/.docker
+      command:
+        - /kaniko/executor
+        - --dockerfile=/workspace/workspace/Dockerfile
+        - --context=/workspace/workspace/
+        - --destination=testing2016/demo:latest
 ---
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  name: build-push-kaniko
   namespace: demo
+  name: build-and-push-taskrun
 spec:
+  serviceAccountName: build-bot
   taskRef:
-    name: build-push-kaniko
-  inputs:
-    resources:
-    - name: workspace
-      resourceRef:
-        name: demo-git-build-push
-  outputs:
-    resources:
-    - name: builtImage
-      resourceRef:
-        name: demo-image-build-push
+    name: build-and-push-task
+  resources:
+    inputs:
+      - name: workspace
+        resourceRef:
+          name: demo-git-build-push

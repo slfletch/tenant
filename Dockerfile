@@ -44,7 +44,7 @@ RUN mkdir -p "${TENANT_HOME}" \
     && mkdir -p "${TENANT_OUTPUT}" \
     && mkdir -p "${TENANT_OUTPUT_DIAGNOSTICS}"
 
-COPY "${CTX_BASE}"/"standardized_scripts/*.sh" "${TENANT_HOME}/"
+COPY "${CTX_BASE}"/"standardized_scripts/" "${TENANT_HOME}/"
 
 #RUN chown -R "${TENANT_USER}": "${TENANT_HOME}" \
 RUN     chmod +x "${TENANT_HOME}/invoke.sh" \

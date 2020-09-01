@@ -1,0 +1,7 @@
+{
+	"auths": {
+		"stacey-0.localdomain:30003": {
+			"auth": "YWRtaW46SGFyYm9yMTIzNDUK"
+		}
+	}
+}
