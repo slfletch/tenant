@@ -4,7 +4,7 @@
 
      sudo apt-get -y install nfs-common curl make docker.io git
 
-#Install Helm 2 
+##Install Helm 2 
 
      curl -LO https://git.io/get_helm.sh
      chmod 700 get_helm.sh
@@ -29,6 +29,7 @@
      EOF
 
 # Set up local helm server
+
      sudo -E tee /etc/systemd/system/helm-serve.service << EOF
      [Unit]
      Description=Helm Server
@@ -66,19 +67,26 @@
      make
      helm upgrade --install nfs-provisioner ./nfs-provisioner --namespace=nfs
 
+## Install Flux Helm Operator
+
 #Add fluxcd repo to helm (using flux helm operator to deploy Harbor)
      
      kubectl create ns flux
      helm repo add fluxcd https://charts.fluxcd.io
 
 #Add helm operator crd
+     
      kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/1.2.0/deploy/crds.yaml
 
 #Make sure helm operator can do helm 2 and helm 3
+
      helm upgrade -i helm-operator fluxcd/helm-operator     --namespace flux
 
-## Deploy nfs using openstack-helm-infra w/some tweaks
-## Deploy harbor, nginx, notary, portal, redis, registry, trivy, clair, chartmuseum, database
+## Install Harbor using flux helm operator
+
+# Deploy nfs using openstack-helm-infra w/some tweaks
+# Deploy harbor, nginx, notary, portal, redis, registry, trivy, clair, chartmuseum, database
+
      cat <<EOF | kubectl apply -f -
      apiVersion: helm.fluxcd.io/v1
      kind: HelmRelease
@@ -117,6 +125,8 @@
              trivy:
                storageClass: nfs-provisioner
      EOF
+
+##Install Tekton
 
 #Install tekton (Will have pipeline examples and tutorials)
 
@@ -157,7 +167,7 @@
 
      kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
 
-#Install Tekton Dashboard
+#Install Tekton Dashboard (optional)
      
      kubectl apply --filename https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
 
