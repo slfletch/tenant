@@ -28,7 +28,7 @@
          namespace: kube-system
      EOF
 
-# Set up local helm server
+#Set up local helm server
 
      sudo -E tee /etc/systemd/system/helm-serve.service << EOF
      [Unit]
@@ -52,7 +52,7 @@
 
      helm init --service-account helm-tiller --output yaml   | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@'   | sed 's@  replicas: 1@  replicas: 1\n  selector: {"matchLabels": {"app": "helm", "name": "tiller"}}@'   | kubectl apply -f -
 
-# Remove stable repo, if present, to improve build time
+#Remove stable repo, if present, to improve build time
 
      helm repo remove stable || true
 
@@ -67,7 +67,7 @@
      make
      helm upgrade --install nfs-provisioner ./nfs-provisioner --namespace=nfs
 
-## Install Flux Helm Operator
+##Install Flux Helm Operator
 
 #Add fluxcd repo to helm (using flux helm operator to deploy Harbor)
      
@@ -82,7 +82,7 @@
 
      helm upgrade -i helm-operator fluxcd/helm-operator     --namespace flux
 
-## Install Harbor using flux helm operator
+##Install Harbor using flux helm operator
 
 # Deploy nfs using openstack-helm-infra w/some tweaks
 # Deploy harbor, nginx, notary, portal, redis, registry, trivy, clair, chartmuseum, database
