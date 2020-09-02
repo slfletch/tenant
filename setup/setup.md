@@ -1,16 +1,19 @@
 #Assuming Kubernetes instance exists with kubectl/kubelet/kubeadm
 
 #Install packages 
-sudo apt-get -y install nfs-common curl make docker.io git
+
+     sudo apt-get -y install nfs-common curl make docker.io git
 
 #Install Helm 2 
-curl -LO https://git.io/get_helm.sh
-chmod 700 get_helm.sh
-./get_helm.sh
+
+     curl -LO https://git.io/get_helm.sh
+     chmod 700 get_helm.sh
+     ./get_helm.sh
 
 #Create service account to allow access to objects
-kubectl create -n kube-system serviceaccount helm-tiller
-cat <<EOF | kubectl apply -f -
+
+     kubectl create -n kube-system serviceaccount helm-tiller
+     cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

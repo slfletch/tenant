@@ -1,1 +1,0 @@
-kubectl delete helmrelease -n demo demo-rabbitmq
