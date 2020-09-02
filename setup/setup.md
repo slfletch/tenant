@@ -171,6 +171,11 @@
      
      kubectl apply --filename https://storage.googleapis.com/tekton-releases/dashboard/latest/tekton-dashboard-release.yaml
 
+#Install nginx ingress - update controller.hostNetwork: true
+   
+     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
+     helm install --name ingress-nginx ingress-nginx/ingress-nginx --set controller.hostNetwork=true
+
 #Setup ingress for Tekton Dashboard
 
      kubectl apply -n tekton-pipelines -f - <<EOF
@@ -189,7 +194,3 @@
                servicePort: 9097
      EOF
 
-#Install nginx ingress - update controller.hostNetwork: true
-   
-     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
-     helm install --name ingress-nginx ingress-nginx/ingress-nginx --set controller.hostNetwork=true
