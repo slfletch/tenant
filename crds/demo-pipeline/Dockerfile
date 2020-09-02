@@ -2,12 +2,6 @@
 ARG FROM=lachlanevenson/k8s-kubectl:latest
 FROM ${FROM} as build
 
-ARG CTX_BASE="."
-
-# Copy everything over from the base image. This flattens the image a little
-FROM scratch
-COPY --from=build / /
-
 # Setup evironment variables used by the standardized scripts
 ARG TENANT_USER="ubuntu"
 ENV TENANT_HOME="/home/${TENANT_USER}"
