@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: webhook-secret
+  namespace: getting-started
+stringData:
+  token: 240d998999eca06ad3deec93f925edaec4e4c4e6 
+  secret: random-string-data

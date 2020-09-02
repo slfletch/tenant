@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: demo-task
+  namespace: demo-pipeline 
+spec:
+  steps:
+    - name: kubectlinstall
+      image: stacey-0.localdomain:30003/tcicd/demo-pipeline:1.2
+      command: ["kubectl"]
+      args:
+        - "get"
+        - "pods"

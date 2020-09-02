@@ -2,9 +2,9 @@ apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
   name: demo-task-run-scdi-valid-user
-  namespace: demo
+  namespace: demo-pipeline
 spec:
-  serviceAccountName: demo-svc
+  serviceAccountName: demo-pipeline-svc
   taskSpec:
     steps:
     - name: demo-setup-valid-user

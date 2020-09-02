@@ -1,0 +1,48 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: demotask-run-scdi
+  namespace: demo-pipeline
+spec:
+  serviceAccountName: demo-pipeline-svc
+  taskSpec:
+    steps:
+    - name: demo-scdi 
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Hello Pipeline"
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: run-get-pods-with-svc-account
+  namespace: demo-pipeline
+spec:
+  serviceAccountName: demo-pipeline-svc
+  taskRef:
+    name: demo-task
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: run-get-pods
+  namespace: demo-pipeline
+spec:
+  taskRef:
+    name: demo-task
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: demotask-run-helm-operator
+  namespace: demo-pipeline
+spec:
+  serviceAccountName: demo-pipeline-svc
+  taskSpec:
+    steps:
+    - name: demo-helm-operator-task
+      image: stacey-0.localdomain:30003/tcicd/demo-pipeline:1.2
+      script: |
+        #!/bin/bash
+        echo "Hello Pipeline"

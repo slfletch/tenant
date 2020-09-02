@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: demo-pipeline
+  namespace: demo
+spec:
+  tasks:
+    name: setup
+    taskRef:
+      name: demo-task-setup
+    name: run
+    taskRef:
+      name: demo-task-run
+    name: test
+    taskRef:
+      name: demo-task-test
