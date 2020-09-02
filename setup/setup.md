@@ -84,8 +84,8 @@
 
 ##Install Harbor using flux helm operator
 
-# Deploy nfs using openstack-helm-infra w/some tweaks
-# Deploy harbor, nginx, notary, portal, redis, registry, trivy, clair, chartmuseum, database
+#Deploy nfs using openstack-helm-infra w/some tweaks
+#Deploy harbor, nginx, notary, portal, redis, registry, trivy, clair, chartmuseum, database
 
      cat <<EOF | kubectl apply -f -
      apiVersion: helm.fluxcd.io/v1
