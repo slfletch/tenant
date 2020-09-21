@@ -1,0 +1,7 @@
+{
+    "host": "localhost",
+    "httpPort": 8000,
+    "httpsPort": 8443,
+    "publicKey": "<path>/cert.pem",
+    "privateKey": "<path>/key.pem"
+}
